@@ -1,5 +1,6 @@
 var http = require('http');
 var fs = require('fs');
+var querystring = require('querystring');
 
 function handler (request, response) {
 
@@ -21,6 +22,7 @@ function handler (request, response) {
       });
     }
     else if(url === '/create-post'){
+    response.writeHead(307, {"Location": '/' });
       var allTheData = '';
       request.on('data', function (chunkOfData) {
 
@@ -29,7 +31,8 @@ function handler (request, response) {
 
       request.on('end', function () {
 
-        console.log(allTheData);
+        var convertedData = querystring.parse(allTheData);
+        console.log(convertedData);
         response.end();
       });
 

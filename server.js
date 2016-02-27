@@ -9,16 +9,26 @@ function handler (request, response) {
 
     if (url === "/") {
       response.writeHead(200, {"Content-Type": "text/html"});
+    }
+    else if (url ==="/node") {
+      response.writeHead(200, {"Content-Type": "text/html"});
+    }
+    else if (url === "/girls") {
+      response.writeHead(200, {"Content-Type": "text/html"});
+    }
+    else {
+      response.writeHead(200, {"Content-Type": "text/html"});
+    }
 
       fs.readFile(__dirname + '/public/index.html', function(error, file) {
         if (error) {
           console.log(error);
           return;
         }
-
         response.end(file);
       });
-    }
+
+
   }
 var server = http.createServer(handler);
 

@@ -2,15 +2,17 @@ var http = require('http');
 var fs = require('fs');
 
 function handler (request, response) {
+
   var method = request.method;
 
     var url = request.url;
 
     console.log(method, url);
 
+
     if (url === "/") {
       response.writeHead(200, {"Content-Type": "text/html"});
-      fs.readFile(__dirname + '/public/index.html', function(error, file) {
+      fs.readFile(__dirname + '/assets/index.html', function(error, file) {
         if (error) {
           console.log(error);
           return;
@@ -18,7 +20,7 @@ function handler (request, response) {
       response.end(file);
     });
 
-  }else {
+  } else {
       fs.readFile(__dirname + url, function(error, file) {
         if (error) {
           console.log(error);
@@ -30,6 +32,18 @@ function handler (request, response) {
         }
       });
     }
+
+    var allTheData = '';
+
+    request.on('data', function (chunkOfData) {
+      
+      allTheData += chunkOfData;
+    });
+
+    request.on('end', function() {
+      console.log(allTheData);
+      response.end();
+    });
   }
 var server = http.createServer(handler);
 

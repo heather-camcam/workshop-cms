@@ -17,11 +17,24 @@ function handler (request, response) {
           console.log(error);
           return;
         }
-      response.end(file);
-    });
+        response.end(file);
+      });
+    }
+    else if(url === '/create-post'){
+      var allTheData = '';
+      request.on('data', function (chunkOfData) {
 
-  } else {
-      fs.readFile(__dirname + url, function(error, file) {
+        allTheData += chunkOfData;
+      });
+
+      request.on('end', function () {
+
+        console.log(allTheData);
+        response.end();
+      });
+
+    } else {
+      fs.readFile(__dirname + '/assets' + url, function(error, file) {
         if (error) {
           console.log(error);
           return;
@@ -32,19 +45,8 @@ function handler (request, response) {
         }
       });
     }
+}
 
-    var allTheData = '';
-
-    request.on('data', function (chunkOfData) {
-      
-      allTheData += chunkOfData;
-    });
-
-    request.on('end', function() {
-      console.log(allTheData);
-      response.end();
-    });
-  }
 var server = http.createServer(handler);
 
 server.listen(3000, function() {

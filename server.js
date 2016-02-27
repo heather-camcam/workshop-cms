@@ -3,32 +3,33 @@ var fs = require('fs');
 
 function handler (request, response) {
   var method = request.method;
-  console.log(method);
 
     var url = request.url;
 
+    console.log(method, url);
+
     if (url === "/") {
       response.writeHead(200, {"Content-Type": "text/html"});
-    }
-    else if (url ==="/node") {
-      response.writeHead(200, {"Content-Type": "text/html"});
-    }
-    else if (url === "/girls") {
-      response.writeHead(200, {"Content-Type": "text/html"});
-    }
-    else {
-      response.writeHead(200, {"Content-Type": "text/html"});
-    }
-
       fs.readFile(__dirname + '/public/index.html', function(error, file) {
         if (error) {
           console.log(error);
           return;
         }
-        response.end(file);
+      response.end(file);
+    });
+
+  }else {
+      fs.readFile(__dirname + url, function(error, file) {
+        if (error) {
+          console.log(error);
+          return;
+        } else {
+          var extension = url.split('.').pop();
+          response.writeHead(200, {"Content-Type": "text/" + extension});
+          response.end(file);
+        }
       });
-
-
+    }
   }
 var server = http.createServer(handler);
 
